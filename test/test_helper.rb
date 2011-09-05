@@ -118,6 +118,13 @@ def setup_db
       
       t.timestamps
     end
+
+    create_table :all_records_strategy_paranoids do |t|
+      t.string :name
+      t.datetime :deleted_at
+
+      t.timestamps
+    end
   end
 end
 
@@ -248,6 +255,10 @@ end
 
 class InheritedParanoid < SuperParanoid
   acts_as_paranoid
+end
+
+class AllRecordsStrategyParanoid < ActiveRecord::Base
+  acts_as_paranoid :show_records_by_default => 'all'
 end
 
 class ParanoidObserver < ActiveRecord::Observer

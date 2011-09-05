@@ -293,3 +293,17 @@ class ParanoidObserverTest < ParanoidBaseTest
     assert_equal @subject, ParanoidObserver.instance.called_after_recover
   end
 end
+
+class DefaultStrategyTest < ParanoidBaseTest
+  def test_all_records_strategy_by_default
+    paranoid_1 = AllRecordsStrategyParanoid.create! :name => "AllRecordsStrategyParanoid #1"
+    paranoid_2 = AllRecordsStrategyParanoid.create! :name => "AllRecordsStrategyParanoid #2"
+
+    assert_equal AllRecordsStrategyParanoid.count, 2
+    assert_equal AllRecordsStrategyParanoid.only_not_deleted.count, 2
+
+    AllRecordsStrategyParanoid.first.destroy
+    assert_equal AllRecordsStrategyParanoid.count, 2
+    assert_equal AllRecordsStrategyParanoid.only_not_deleted.count, 1
+  end
+end
